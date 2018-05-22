@@ -7,7 +7,7 @@ import br.com.thiengo.superplacar.MainActivity;
 
 
 public class Worker extends Thread {
-    private WeakReference<MainActivity> activity;
+    final private WeakReference<MainActivity> activity;
 
     public Worker( MainActivity activity ){
         this.activity = new WeakReference<>( activity );

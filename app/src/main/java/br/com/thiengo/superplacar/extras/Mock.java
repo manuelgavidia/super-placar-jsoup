@@ -3,14 +3,14 @@ package br.com.thiengo.superplacar.extras;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.thiengo.superplacar.domain.Gol;
-import br.com.thiengo.superplacar.domain.Jogo;
-import br.com.thiengo.superplacar.domain.Time;
+import br.com.thiengo.superplacar.domain.Goal;
+import br.com.thiengo.superplacar.domain.Match;
+import br.com.thiengo.superplacar.domain.Team;
 
 
 public class Mock {
 
-    public static List<Gol> gerarGoals(int qtd ){
+    private static List<Goal> genGoals(int qtd){
         String[] times = {"16'1T", "35'1T", "01'2T", "21'2T"};
         String[] nomes = {
                 "Fernando",
@@ -18,21 +18,21 @@ public class Mock {
                 "Léo Castro",
                 "João Paulo"
         };
-        List<Gol> gols = new ArrayList<>();
+        List<Goal> goals = new ArrayList<>();
 
         for( int i = 0; i < qtd; i++ ){
             int randomPos = (int) (Math.random() * 4);
-            Gol g = new Gol();
+            Goal g = new Goal();
 
-            g.setTime( times[randomPos] );
-            g.setNome( nomes[randomPos] );
-            gols.add( g );
+            g.setTeam( times[randomPos] );
+            g.setName( nomes[randomPos] );
+            goals.add( g );
         }
 
-        return gols;
+        return goals;
     }
 
-    public static Time gerarTime(int posicao ){
+    private static Team genTeam(int rank){
         String[] nomes = {"Rio Claro", "São Caetano", "S. J. Campos", "Nacional-SP"};
         String[] imagens = {
             "http://www.superplacar.com.br/images/escudos/f1eab3ac03d333dc76278b2f7989bace-68.png",
@@ -42,31 +42,31 @@ public class Mock {
         };
         int[] goals = {0, 2, 1, 0};
 
-        Time time = new Time();
-        time.setNome( nomes[ posicao ] );
-        time.setImagemUrl( imagens[ posicao ] );
-        time.setGols( goals[ posicao ] );
-        time.getGolsLista().addAll( gerarGoals( goals[ posicao ] ) );
+        Team team = new Team();
+        team.setName( nomes[ rank ] );
+        team.setImageUrl( imagens[ rank ] );
+        team.setGoals( goals[ rank ] );
+        team.getGoalsList().addAll( genGoals( goals[ rank ] ) );
 
-        return time;
+        return team;
     }
 
-    public static Jogo gerarJogo(int posicao ){
+    private static Match genMatch(int rank){
         String[] status = {"Em andamento", "Em breve", "Encerrado"};
         String[] inicios = {"16:55", "19:00", "20:00"};
-        Jogo jogo = new Jogo();
-        jogo.setTime1( gerarTime( posicao ) );
-        jogo.setTime2( gerarTime( posicao + 1 ) );
-        jogo.setStatus( status[posicao] );
-        jogo.setInicio( inicios[posicao] );
+        Match jogo = new Match();
+        jogo.setTeam1( genTeam( rank ) );
+        jogo.setTeam2( genTeam( rank + 1 ) );
+        jogo.setStatus( status[rank] );
+        jogo.setStart( inicios[rank] );
 
         return jogo;
     }
 
-    public static ArrayList<Jogo> gerarJogos(){
-        ArrayList<Jogo> jogos = new ArrayList<>();
-        jogos.add( gerarJogo(0) );
-        jogos.add( gerarJogo(2) );
+    public static ArrayList<Match> genMatches(){
+        ArrayList<Match> jogos = new ArrayList<>();
+        jogos.add( genMatch(0) );
+        jogos.add( genMatch(2) );
 
         return jogos;
     }

@@ -8,15 +8,15 @@ import android.support.v7.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
-import br.com.thiengo.superplacar.domain.Jogo;
+import br.com.thiengo.superplacar.domain.Match;
 import br.com.thiengo.superplacar.extras.SuperPlacarRequest;
 import br.com.thiengo.superplacar.extras.Worker;
 
 
 public class MainActivity extends AppCompatActivity {
 
-    private JogosAdapter adapter;
-    private ArrayList<Jogo> jogos;
+    private MatchesAdapter adapter;
+    private ArrayList<Match> matches;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,25 +24,25 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         if( savedInstanceState != null ){
-            jogos = savedInstanceState.getParcelableArrayList(Jogo.JOGOS_KEY);
+            matches = savedInstanceState.getParcelableArrayList(Match.MATCHES_KEY);
             initViews();
-            retrieveJogosStream();
+            retrieveMatchesStream();
         }
         else{
-            jogos = new ArrayList<>();
+            matches = new ArrayList<>();
             initViews();
-            retrieveJogos();
+            retrieveMatches();
         }
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putParcelableArrayList(Jogo.JOGOS_KEY, jogos);
+        outState.putParcelableArrayList(Match.MATCHES_KEY, matches);
         super.onSaveInstanceState(outState);
     }
 
     private void initViews() {
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.rv_jogos);
+        RecyclerView recyclerView = findViewById(R.id.rv_matches);
         recyclerView.setHasFixedSize(true);
 
         LinearLayoutManager mLayoutManager = new LinearLayoutManager( this );
@@ -53,22 +53,22 @@ public class MainActivity extends AppCompatActivity {
                 mLayoutManager.getOrientation() );
         recyclerView.addItemDecoration( divider );
 
-        adapter = new JogosAdapter( this, jogos );
+        adapter = new MatchesAdapter( this, matches);
         recyclerView.setAdapter( adapter );
     }
 
-    private void retrieveJogos(){
+    private void retrieveMatches(){
         new SuperPlacarRequest(this).execute();
-        retrieveJogosStream();
+        retrieveMatchesStream();
     }
 
-    private void retrieveJogosStream(){
+    private void retrieveMatchesStream(){
         new Worker(this).start();
     }
 
-    public void updateLista( List<Jogo> j ){
-        jogos.clear();
-        jogos.addAll( j );
+    public void update(List<Match> j ){
+        matches.clear();
+        matches.addAll( j );
         adapter.notifyDataSetChanged();
     }
 }

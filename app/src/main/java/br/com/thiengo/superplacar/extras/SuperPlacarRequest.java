@@ -11,26 +11,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.thiengo.superplacar.MainActivity;
-import br.com.thiengo.superplacar.domain.Gol;
-import br.com.thiengo.superplacar.domain.Jogo;
-import br.com.thiengo.superplacar.domain.Time;
+import br.com.thiengo.superplacar.domain.Goal;
+import br.com.thiengo.superplacar.domain.Match;
+import br.com.thiengo.superplacar.domain.Team;
 
 
-public class SuperPlacarRequest extends AsyncTask<Void, Void, List<Jogo>> {
-    private WeakReference<MainActivity> activity;
+public class SuperPlacarRequest extends AsyncTask<Void, Void, List<Match>> {
+    final private WeakReference<MainActivity> activity;
 
     public SuperPlacarRequest( MainActivity activity ){
         this.activity = new WeakReference<>( activity );
     }
 
     @Override
-    protected List<Jogo> doInBackground(Void... voids) {
+    protected List<Match> doInBackground(Void... voids) {
 
-        Document html = null;
-        List<Jogo> jogos = new ArrayList<>();
+        List<Match> matches = new ArrayList<>();
 
         try {
-            html = Jsoup.connect("http://www.superplacar.com.br/").get();
+            Document html = Jsoup.connect("http://www.superplacar.com.br/").get();
             Elements time = html.select("div.time-status span.time");
             Elements status = html.select("div.time-status span.status");
             Elements times1 = html.select("div.team1");
@@ -38,15 +37,15 @@ public class SuperPlacarRequest extends AsyncTask<Void, Void, List<Jogo>> {
 
             for( int i = 0; i < time.size(); i++ ){
 
-                Time time1 = getTime( times1.get(i), true );
-                Time time2 = getTime( times2.get(i), false );
-                Jogo jogo = new Jogo();
+                Team team1 = getTime( times1.get(i), true );
+                Team team2 = getTime( times2.get(i), false );
+                Match match = new Match();
 
-                jogo.setInicio( time.get(i).text() );
-                jogo.setStatus( status.get(i).text() );
-                jogo.setTime1( time1 );
-                jogo.setTime2( time2 );
-                jogos.add( jogo );
+                match.setStart( time.get(i).text() );
+                match.setStatus( status.get(i).text() );
+                match.setTeam1(team1);
+                match.setTeam2(team2);
+                matches.add( match );
             }
 
         }
@@ -54,42 +53,42 @@ public class SuperPlacarRequest extends AsyncTask<Void, Void, List<Jogo>> {
             e.printStackTrace();
         }
 
-        return jogos;
+        return matches;
     }
 
-    private Time getTime( Element timeTag, boolean casa ){
+    private Team getTime(Element timeTag, boolean casa ){
         int indice = casa ? 1 : 2;
-        Time time = new Time();
-        time.setNome( timeTag.select("span.team"+indice+"-name").text() );
-        time.setImagemUrl( timeTag.select("img").attr("src") );
+        Team team = new Team();
+        team.setName( timeTag.select("span.team"+indice+"-name").text() );
+        team.setImageUrl( timeTag.select("img").attr("src") );
 
         String goalsString = timeTag.select("span.team"+indice+"-score").text();
         int goals = goalsString.isEmpty() ? 0 : Integer.parseInt( goalsString );
-        time.setGols( goals );
+        team.setGoals( goals );
 
-        time.getGolsLista().addAll( getGolsLista( timeTag ) );
-        return time;
+        team.getGoalsList().addAll( getGoalsList( timeTag ) );
+        return team;
     }
 
-    private List<Gol> getGolsLista(Element timeTag ){
-        Elements golsLista = timeTag.select("ul.goal-players li");
-        List<Gol> gols = new ArrayList<>();
+    private List<Goal> getGoalsList(Element timeTag ){
+        Elements goalsList = timeTag.select("ul.goal-players li");
+        List<Goal> goals = new ArrayList<>();
 
-        for( Element g : golsLista ){
-            Gol gol = new Gol();
-            gol.setNome( g.select(".name").text() );
-            gol.setTime( g.select(".time").text() );
-            gols.add(gol);
+        for( Element g : goalsList ){
+            Goal goal = new Goal();
+            goal.setName( g.select(".name").text() );
+            goal.setTeam( g.select(".time").text() );
+            goals.add(goal);
         }
-        return gols;
+        return goals;
     }
 
     @Override
-    protected void onPostExecute(List<Jogo> jogos) {
-        super.onPostExecute( jogos );
+    protected void onPostExecute(List<Match> matches) {
+        super.onPostExecute( matches );
 
         if( activity.get() != null ){
-            activity.get().updateLista( jogos );
+            activity.get().update( matches );
         }
     }
 }
