@@ -14,6 +14,7 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 import br.com.thiengo.superplacar.domain.Goal;
 import br.com.thiengo.superplacar.domain.Match;
+import br.com.thiengo.superplacar.domain.Team;
 
 
 public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.ViewHolder> {
@@ -22,28 +23,46 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.ViewHold
 
     class ViewHolder extends RecyclerView.ViewHolder{
         final TextView tvStatus;
-        final ImageView ivTeam1;
-        final TextView tvNameTeam1;
-        final TextView tvGoalsTeam1;
-        final RecyclerView rvTeam1;
-        final ImageView ivTeam2;
-        final TextView tvGoalsTeam2;
-        final TextView tvNameTeam2;
-        final RecyclerView rvTeam2;
+
+        class TeamView {
+            TeamView(ImageView iv, TextView tvName, TextView tvGoals, RecyclerView rv) {
+                this.iv = iv;
+                this.rv = rv;
+                this.tvGoals = tvGoals;
+                this.tvName = tvName;
+            }
+
+            void load(Team team) {
+                Picasso.with( context )
+                        .load( team.getImageUrl() )
+                        .into(this.iv);
+                this.tvName.setText( String.valueOf( team.getName() ) );
+                this.tvGoals.setText( String.valueOf( team.getGoals() ) );
+                updateRecyclerView(this.rv, team.getGoalsList() );
+            }
+            private final ImageView iv;
+            private final TextView tvGoals;
+            private final TextView tvName;
+            private final RecyclerView rv;
+        }
+
+        final TeamView teamView1;
+        final TeamView teamView2;
 
         ViewHolder(View itemView) {
             super(itemView);
 
             tvStatus =    itemView.findViewById(R.id.tv_status);
-            ivTeam1 =     itemView.findViewById(R.id.iv_team_1);
-            tvNameTeam1 = itemView.findViewById(R.id.tv_name_team_1);
-            tvGoalsTeam1 = itemView.findViewById(R.id.tv_goals_team_1);
-            rvTeam1 = initRecyclerView( R.id.rv_goals_team_1, R.layout.item_goal_left);
 
-            ivTeam2 =       itemView.findViewById(R.id.iv_time_2);
-            tvGoalsTeam2 =   itemView.findViewById(R.id.tv_goals_team_2);
-            tvNameTeam2 =   itemView.findViewById(R.id.tv_nome_time_2);
-            rvTeam2 = initRecyclerView( R.id.rv_goals_team_2, R.layout.item_goal_right);
+            teamView1 = new TeamView(   (ImageView)itemView.findViewById(R.id.iv_team_1),
+                                        (TextView)itemView.findViewById(R.id.tv_name_team_1),
+                                        (TextView)itemView.findViewById(R.id.tv_goals_team_1),
+                                        initRecyclerView(R.id.rv_goals_team_1, R.layout.item_goal_left));
+
+            teamView2 = new TeamView(   (ImageView)itemView.findViewById(R.id.iv_team_2),
+                                        (TextView)itemView.findViewById(R.id.tv_name_team_2),
+                                        (TextView)itemView.findViewById(R.id.tv_goals_team_2),
+                                        initRecyclerView(R.id.rv_goals_team_2, R.layout.item_goal_right));
         }
 
         private RecyclerView initRecyclerView( int rvId, int idLayout ){
@@ -58,19 +77,8 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.ViewHold
             tvStatus.setText(
                     Html.fromHtml( "<b>"+match.getStatus()+"</b> ("+match.getStart()+")" ) );
 
-            Picasso.with( context )
-                    .load( match.getTeam1().getImageUrl() )
-                    .into(ivTeam1);
-            tvNameTeam1.setText( String.valueOf( match.getTeam1().getName() ) );
-            tvGoalsTeam1.setText( String.valueOf( match.getTeam1().getGoals() ) );
-            updateRecyclerView(rvTeam1, match.getTeam1().getGoalsList() );
-
-            Picasso.with( context )
-                    .load( match.getTeam2().getImageUrl() )
-                    .into(ivTeam2);
-            tvNameTeam2.setText( String.valueOf( match.getTeam2().getName() ) );
-            tvGoalsTeam2.setText( String.valueOf( match.getTeam2().getGoals() ) );
-            updateRecyclerView(rvTeam2, match.getTeam2().getGoalsList() );
+            teamView1.load(match.getTeam1());
+            teamView2.load(match.getTeam2());
         }
 
         private void updateRecyclerView( RecyclerView rv, List<Goal> goals){

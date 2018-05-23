@@ -32,13 +32,13 @@ public class SuperPlacarRequest extends AsyncTask<Void, Void, List<Match>> {
             Document html = Jsoup.connect("http://www.superplacar.com.br/").get();
             Elements time = html.select("div.time-status span.time");
             Elements status = html.select("div.time-status span.status");
-            Elements times1 = html.select("div.team1");
-            Elements times2 = html.select("div.team2");
+            Elements team1_html = html.select("div.team1");
+            Elements team2_html = html.select("div.team2");
 
             for( int i = 0; i < time.size(); i++ ){
 
-                Team team1 = getTime( times1.get(i), true );
-                Team team2 = getTime( times2.get(i), false );
+                Team team1 = getTeam( team1_html.get(i), true );
+                Team team2 = getTeam( team2_html.get(i), false );
                 Match match = new Match();
 
                 match.setStart( time.get(i).text() );
@@ -56,13 +56,13 @@ public class SuperPlacarRequest extends AsyncTask<Void, Void, List<Match>> {
         return matches;
     }
 
-    private Team getTime(Element timeTag, boolean casa ){
-        int indice = casa ? 1 : 2;
+    private Team getTeam(Element timeTag, boolean home ){
+        int idx = home ? 1 : 2;
         Team team = new Team();
-        team.setName( timeTag.select("span.team"+indice+"-name").text() );
+        team.setName( timeTag.select("span.team"+idx+"-name").text() );
         team.setImageUrl( timeTag.select("img").attr("src") );
 
-        String goalsString = timeTag.select("span.team"+indice+"-score").text();
+        String goalsString = timeTag.select("span.team"+idx+"-score").text();
         int goals = goalsString.isEmpty() ? 0 : Integer.parseInt( goalsString );
         team.setGoals( goals );
 
