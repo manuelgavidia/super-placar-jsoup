@@ -54,14 +54,14 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.ViewHold
 
             tvStatus =    itemView.findViewById(R.id.tv_status);
 
-            homeView = new TeamView(   (ImageView)itemView.findViewById(R.id.iv_team_1),
-                                        (TextView)itemView.findViewById(R.id.tv_name_team_1),
-                                        (TextView)itemView.findViewById(R.id.tv_goals_team_1),
+            homeView = new TeamView(   (ImageView)itemView.findViewById(R.id.iv_team_home),
+                                        (TextView)itemView.findViewById(R.id.tv_name_team_home),
+                                        (TextView)itemView.findViewById(R.id.tv_goals_team_home),
                                         initRecyclerView(R.id.rv_goals_team_1, R.layout.item_goal_home));
 
-            awayView = new TeamView(   (ImageView)itemView.findViewById(R.id.iv_team_2),
-                                        (TextView)itemView.findViewById(R.id.tv_name_team_2),
-                                        (TextView)itemView.findViewById(R.id.tv_goals_team_2),
+            awayView = new TeamView(   (ImageView)itemView.findViewById(R.id.iv_team_away),
+                                        (TextView)itemView.findViewById(R.id.tv_name_team_away),
+                                        (TextView)itemView.findViewById(R.id.tv_goals_team_away),
                                         initRecyclerView(R.id.rv_goals_team_2, R.layout.item_goal_away));
         }
 
