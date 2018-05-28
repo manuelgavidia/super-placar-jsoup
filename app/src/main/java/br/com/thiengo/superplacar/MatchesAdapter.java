@@ -46,23 +46,23 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.ViewHold
             private final RecyclerView rv;
         }
 
-        final TeamView teamView1;
-        final TeamView teamView2;
+        final TeamView homeView;
+        final TeamView awayView;
 
         ViewHolder(View itemView) {
             super(itemView);
 
             tvStatus =    itemView.findViewById(R.id.tv_status);
 
-            teamView1 = new TeamView(   (ImageView)itemView.findViewById(R.id.iv_team_1),
+            homeView = new TeamView(   (ImageView)itemView.findViewById(R.id.iv_team_1),
                                         (TextView)itemView.findViewById(R.id.tv_name_team_1),
                                         (TextView)itemView.findViewById(R.id.tv_goals_team_1),
-                                        initRecyclerView(R.id.rv_goals_team_1, R.layout.item_goal_left));
+                                        initRecyclerView(R.id.rv_goals_team_1, R.layout.item_goal_home));
 
-            teamView2 = new TeamView(   (ImageView)itemView.findViewById(R.id.iv_team_2),
+            awayView = new TeamView(   (ImageView)itemView.findViewById(R.id.iv_team_2),
                                         (TextView)itemView.findViewById(R.id.tv_name_team_2),
                                         (TextView)itemView.findViewById(R.id.tv_goals_team_2),
-                                        initRecyclerView(R.id.rv_goals_team_2, R.layout.item_goal_right));
+                                        initRecyclerView(R.id.rv_goals_team_2, R.layout.item_goal_away));
         }
 
         private RecyclerView initRecyclerView( int rvId, int idLayout ){
@@ -77,8 +77,8 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.ViewHold
             tvStatus.setText(
                     Html.fromHtml( "<b>"+match.getStatus()+"</b> ("+match.getStart()+")" ) );
 
-            teamView1.load(match.getHome());
-            teamView2.load(match.getAway());
+            homeView.load(match.getHome());
+            awayView.load(match.getAway());
         }
 
         private void updateRecyclerView( RecyclerView rv, List<Goal> goals){
