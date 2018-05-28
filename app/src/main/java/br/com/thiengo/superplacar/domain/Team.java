@@ -7,13 +7,15 @@ import java.util.List;
 
 
 public class Team implements Parcelable {
-    private String name;
-    private String imageUrl;
+    final private String name;
+    final private String imageUrl;
     private int goals;
     final private List<Goal> goalsList;
 
 
-    public Team(){
+    public Team(String name, String url){
+        this.name = name;
+        this.imageUrl = url;
         goalsList = new ArrayList<>();
     }
 
@@ -22,16 +24,8 @@ public class Team implements Parcelable {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getImageUrl() {
         return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
     }
 
     public int getGoals() {

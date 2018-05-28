@@ -7,25 +7,17 @@ import android.os.Parcelable;
 public class Match implements Parcelable {
     public static final String MATCHES_KEY = "matches_key";
 
-    private Team team1;
-    private Team team2;
+    final private Team home;
+    final private Team away;
     private String status;
     private String start;
 
-    public Team getTeam1() {
-        return team1;
+    public Team getHome() {
+        return home;
     }
 
-    public void setTeam1(Team team1) {
-        this.team1 = team1;
-    }
-
-    public Team getTeam2() {
-        return team2;
-    }
-
-    public void setTeam2(Team team2) {
-        this.team2 = team2;
+    public Team getAway() {
+        return away;
     }
 
     public String getStatus() {
@@ -40,9 +32,7 @@ public class Match implements Parcelable {
         return start;
     }
 
-    public void setStart(String start) {
-        this.start = start;
-    }
+    public void setStart(String start) { this.start = start; }
 
     @Override
     public int describeContents() {
@@ -51,18 +41,20 @@ public class Match implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeParcelable(this.team1, flags);
-        dest.writeParcelable(this.team2, flags);
+        dest.writeParcelable(this.home, flags);
+        dest.writeParcelable(this.away, flags);
         dest.writeString(this.status);
         dest.writeString(this.start);
     }
 
-    public Match() {
+    public Match(Team home, Team away) {
+        this.home = home;
+        this.away = away;
     }
 
     private Match(Parcel in) {
-        this.team1 = in.readParcelable(Team.class.getClassLoader());
-        this.team2 = in.readParcelable(Team.class.getClassLoader());
+        this.home = in.readParcelable(Team.class.getClassLoader());
+        this.away = in.readParcelable(Team.class.getClassLoader());
         this.status = in.readString();
         this.start = in.readString();
     }

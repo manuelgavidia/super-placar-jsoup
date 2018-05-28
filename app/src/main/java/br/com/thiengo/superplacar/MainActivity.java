@@ -9,7 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 import br.com.thiengo.superplacar.domain.Match;
-import br.com.thiengo.superplacar.extras.SuperPlacarRequest;
+import br.com.thiengo.superplacar.extras.FifaRequest;
 import br.com.thiengo.superplacar.extras.Worker;
 
 
@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void retrieveMatches(){
-        new SuperPlacarRequest(this).execute();
+        new FifaRequest(this).execute();
         retrieveMatchesStream();
     }
 

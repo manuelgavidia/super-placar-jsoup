@@ -77,8 +77,8 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.ViewHold
             tvStatus.setText(
                     Html.fromHtml( "<b>"+match.getStatus()+"</b> ("+match.getStart()+")" ) );
 
-            teamView1.load(match.getTeam1());
-            teamView2.load(match.getTeam2());
+            teamView1.load(match.getHome());
+            teamView2.load(match.getAway());
         }
 
         private void updateRecyclerView( RecyclerView rv, List<Goal> goals){

@@ -42,9 +42,7 @@ public class Mock {
         };
         int[] goals = {0, 2, 1, 0};
 
-        Team team = new Team();
-        team.setName( nomes[ rank ] );
-        team.setImageUrl( imagens[ rank ] );
+        Team team = new Team(nomes[rank], imagens[rank]);
         team.setGoals( goals[ rank ] );
         team.getGoalsList().addAll( genGoals( goals[ rank ] ) );
 
@@ -54,9 +52,7 @@ public class Mock {
     private static Match genMatch(int rank){
         String[] status = {"Em andamento", "Em breve", "Encerrado"};
         String[] inicios = {"16:55", "19:00", "20:00"};
-        Match jogo = new Match();
-        jogo.setTeam1( genTeam( rank ) );
-        jogo.setTeam2( genTeam( rank + 1 ) );
+        Match jogo = new Match(genTeam( rank ), genTeam(rank + 1));
         jogo.setStatus( status[rank] );
         jogo.setStart( inicios[rank] );
 

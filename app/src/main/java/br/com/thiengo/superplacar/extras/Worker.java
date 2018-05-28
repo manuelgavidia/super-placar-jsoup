@@ -19,7 +19,7 @@ public class Worker extends Thread {
 
         while( activity.get() != null ){
             SystemClock.sleep(60000);
-            new SuperPlacarRequest( activity.get() ).execute();
+            new FifaRequest( activity.get() ).execute();
         }
     }
 }
