@@ -2,23 +2,41 @@ package br.com.thiengo.superplacar.domain;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class Team implements Parcelable {
+    public static final Parcelable.Creator<Team> CREATOR = new Parcelable.Creator<Team>() {
+        @Override
+        public Team createFromParcel(Parcel source) {
+            return new Team(source);
+        }
+
+        @Override
+        public Team[] newArray(int size) {
+            return new Team[size];
+        }
+    };
     final private String name;
     final private String imageUrl;
-    private int goals;
     final private List<Goal> goalsList;
+    private int goals;
 
 
-    public Team(String name, String url){
+    public Team(String name, String url) {
         this.name = name;
         this.imageUrl = url;
         goalsList = new ArrayList<>();
     }
 
+    private Team(Parcel in) {
+        this.name = in.readString();
+        this.imageUrl = in.readString();
+        this.goals = in.readInt();
+        this.goalsList = in.createTypedArrayList(Goal.CREATOR);
+    }
 
     public String getName() {
         return name;
@@ -40,7 +58,6 @@ public class Team implements Parcelable {
         return goalsList;
     }
 
-
     @Override
     public int describeContents() {
         return 0;
@@ -53,23 +70,4 @@ public class Team implements Parcelable {
         dest.writeInt(this.goals);
         dest.writeTypedList(this.goalsList);
     }
-
-    private Team(Parcel in) {
-        this.name = in.readString();
-        this.imageUrl = in.readString();
-        this.goals = in.readInt();
-        this.goalsList = in.createTypedArrayList(Goal.CREATOR);
-    }
-
-    public static final Parcelable.Creator<Team> CREATOR = new Parcelable.Creator<Team>() {
-        @Override
-        public Team createFromParcel(Parcel source) {
-            return new Team(source);
-        }
-
-        @Override
-        public Team[] newArray(int size) {
-            return new Team[size];
-        }
-    };
 }

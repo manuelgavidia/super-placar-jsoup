@@ -10,8 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.squareup.picasso.Picasso;
+
 import java.util.List;
+
 import br.com.thiengo.superplacar.domain.Goal;
 import br.com.thiengo.superplacar.domain.Match;
 import br.com.thiengo.superplacar.domain.Team;
@@ -21,75 +24,7 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.ViewHold
     final private Context context;
     final private List<Match> matches;
 
-    class ViewHolder extends RecyclerView.ViewHolder{
-        final TextView tvStatus;
-
-        class TeamView {
-            TeamView(ImageView iv, TextView tvName, TextView tvGoals, RecyclerView rv) {
-                this.iv = iv;
-                this.rv = rv;
-                this.tvGoals = tvGoals;
-                this.tvName = tvName;
-            }
-
-            void load(Team team) {
-                Picasso.with( context )
-                        .load( team.getImageUrl() )
-                        .into(this.iv);
-                this.tvName.setText( String.valueOf( team.getName() ) );
-                this.tvGoals.setText( String.valueOf( team.getGoals() ) );
-                updateRecyclerView(this.rv, team.getGoalsList() );
-            }
-            private final ImageView iv;
-            private final TextView tvGoals;
-            private final TextView tvName;
-            private final RecyclerView rv;
-        }
-
-        final TeamView homeView;
-        final TeamView awayView;
-
-        ViewHolder(View itemView) {
-            super(itemView);
-
-            tvStatus =    itemView.findViewById(R.id.tv_status);
-
-            homeView = new TeamView(   (ImageView)itemView.findViewById(R.id.iv_team_home),
-                                        (TextView)itemView.findViewById(R.id.tv_name_team_home),
-                                        (TextView)itemView.findViewById(R.id.tv_goals_team_home),
-                                        initRecyclerView(R.id.rv_goals_team_1, R.layout.item_goal_home));
-
-            awayView = new TeamView(   (ImageView)itemView.findViewById(R.id.iv_team_away),
-                                        (TextView)itemView.findViewById(R.id.tv_name_team_away),
-                                        (TextView)itemView.findViewById(R.id.tv_goals_team_away),
-                                        initRecyclerView(R.id.rv_goals_team_2, R.layout.item_goal_away));
-        }
-
-        private RecyclerView initRecyclerView( int rvId, int idLayout ){
-            RecyclerView rv = itemView.findViewById( rvId );
-            LinearLayoutManager mLayoutManager = new LinearLayoutManager( context );
-            rv.setLayoutManager(mLayoutManager);
-            rv.setAdapter( new GoalsAdapter(context, idLayout) );
-            return rv;
-        }
-
-        private void setData( Match match ){
-            tvStatus.setText(
-                    Html.fromHtml( "<b>"+match.getStatus()+"</b> ("+match.getStart()+")" ) );
-
-            homeView.load(match.getHome());
-            awayView.load(match.getAway());
-        }
-
-        private void updateRecyclerView( RecyclerView rv, List<Goal> goals){
-            GoalsAdapter adapter = (GoalsAdapter) rv.getAdapter();
-            adapter.setGoasl(goals);
-        }
-    }
-
-
-
-    MatchesAdapter(Context context, List<Match> matches){
+    MatchesAdapter(Context context, List<Match> matches) {
         this.context = context;
         this.matches = matches;
     }
@@ -98,7 +33,7 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.ViewHold
     @Override
     public MatchesAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater
-                .from( context )
+                .from(context)
                 .inflate(R.layout.item_match, parent, false);
 
         return new ViewHolder(v);
@@ -106,11 +41,75 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.setData( matches.get( position ) );
+        holder.setData(matches.get(position));
     }
 
     @Override
     public int getItemCount() {
         return matches.size();
+    }
+
+    class ViewHolder extends RecyclerView.ViewHolder {
+        final TextView tvStatus;
+        final TeamView homeView;
+        final TeamView awayView;
+        ViewHolder(View itemView) {
+            super(itemView);
+
+            tvStatus = itemView.findViewById(R.id.tv_status);
+
+            homeView = new TeamView((ImageView) itemView.findViewById(R.id.iv_team_home),
+                    (TextView) itemView.findViewById(R.id.tv_name_team_home),
+                    (TextView) itemView.findViewById(R.id.tv_goals_team_home),
+                    initRecyclerView(R.id.rv_goals_team_1, R.layout.item_goal_home));
+
+            awayView = new TeamView((ImageView) itemView.findViewById(R.id.iv_team_away),
+                    (TextView) itemView.findViewById(R.id.tv_name_team_away),
+                    (TextView) itemView.findViewById(R.id.tv_goals_team_away),
+                    initRecyclerView(R.id.rv_goals_team_2, R.layout.item_goal_away));
+        }
+
+        private RecyclerView initRecyclerView(int rvId, int idLayout) {
+            RecyclerView rv = itemView.findViewById(rvId);
+            LinearLayoutManager mLayoutManager = new LinearLayoutManager(context);
+            rv.setLayoutManager(mLayoutManager);
+            rv.setAdapter(new GoalsAdapter(context, idLayout));
+            return rv;
+        }
+
+        private void setData(Match match) {
+            tvStatus.setText(
+                    Html.fromHtml("<b>" + match.getStatus() + "</b> (" + match.getStart() + ")"));
+
+            homeView.load(match.getHome());
+            awayView.load(match.getAway());
+        }
+
+        private void updateRecyclerView(RecyclerView rv, List<Goal> goals) {
+            GoalsAdapter adapter = (GoalsAdapter) rv.getAdapter();
+            adapter.setGoasl(goals);
+        }
+
+        class TeamView {
+            private final ImageView iv;
+            private final TextView tvGoals;
+            private final TextView tvName;
+            private final RecyclerView rv;
+            TeamView(ImageView iv, TextView tvName, TextView tvGoals, RecyclerView rv) {
+                this.iv = iv;
+                this.rv = rv;
+                this.tvGoals = tvGoals;
+                this.tvName = tvName;
+            }
+
+            void load(Team team) {
+                Picasso.with(context)
+                        .load(team.getImageUrl())
+                        .into(this.iv);
+                this.tvName.setText(String.valueOf(team.getName()));
+                this.tvGoals.setText(String.valueOf(team.getGoals()));
+                updateRecyclerView(this.rv, team.getGoalsList());
+            }
+        }
     }
 }

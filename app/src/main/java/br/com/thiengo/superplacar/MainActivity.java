@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import br.com.thiengo.superplacar.domain.Match;
 import br.com.thiengo.superplacar.extras.FifaRequest;
 import br.com.thiengo.superplacar.extras.Worker;
@@ -23,12 +24,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if( savedInstanceState != null ){
+        if (savedInstanceState != null) {
             matches = savedInstanceState.getParcelableArrayList(Match.MATCHES_KEY);
             initViews();
             retrieveMatchesStream();
-        }
-        else{
+        } else {
             matches = new ArrayList<>();
             initViews();
             retrieveMatches();
@@ -45,30 +45,30 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.rv_matches);
         recyclerView.setHasFixedSize(true);
 
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager( this );
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(mLayoutManager);
 
         DividerItemDecoration divider = new DividerItemDecoration(
                 this,
-                mLayoutManager.getOrientation() );
-        recyclerView.addItemDecoration( divider );
+                mLayoutManager.getOrientation());
+        recyclerView.addItemDecoration(divider);
 
-        adapter = new MatchesAdapter( this, matches);
-        recyclerView.setAdapter( adapter );
+        adapter = new MatchesAdapter(this, matches);
+        recyclerView.setAdapter(adapter);
     }
 
-    private void retrieveMatches(){
+    private void retrieveMatches() {
         new FifaRequest(this).execute();
         retrieveMatchesStream();
     }
 
-    private void retrieveMatchesStream(){
+    private void retrieveMatchesStream() {
         new Worker(this).start();
     }
 
-    public void update(List<Match> j ){
+    public void update(List<Match> j) {
         matches.clear();
-        matches.addAll( j );
+        matches.addAll(j);
         adapter.notifyDataSetChanged();
     }
 }

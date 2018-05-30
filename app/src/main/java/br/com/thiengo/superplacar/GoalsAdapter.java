@@ -7,8 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import br.com.thiengo.superplacar.domain.Goal;
 
 
@@ -17,23 +19,7 @@ public class GoalsAdapter extends RecyclerView.Adapter<GoalsAdapter.ViewHolder> 
     private final int idLayout;
     private final List<Goal> goals;
 
-    class ViewHolder extends RecyclerView.ViewHolder{
-        final TextView tvTime;
-        final TextView tvNome;
-
-        ViewHolder(View itemView) {
-            super(itemView);
-            tvTime = itemView.findViewById(R.id.tv_time);
-            tvNome = itemView.findViewById(R.id.tv_nome);
-        }
-
-        private void setData( Goal goal){
-            tvTime.setText( goal.getTeam() );
-            tvNome.setText( goal.getName() );
-        }
-    }
-
-    GoalsAdapter(Context context, int idLayout){
+    GoalsAdapter(Context context, int idLayout) {
         this.context = context;
         this.idLayout = idLayout;
         this.goals = new ArrayList<>();
@@ -43,15 +29,15 @@ public class GoalsAdapter extends RecyclerView.Adapter<GoalsAdapter.ViewHolder> 
     @Override
     public GoalsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater
-                .from( context )
-                .inflate( idLayout, parent, false );
+                .from(context)
+                .inflate(idLayout, parent, false);
 
         return new ViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.setData( goals.get( position ) );
+        holder.setData(goals.get(position));
     }
 
     @Override
@@ -59,9 +45,25 @@ public class GoalsAdapter extends RecyclerView.Adapter<GoalsAdapter.ViewHolder> 
         return goals.size();
     }
 
-    public void setGoasl( List<Goal> goals){
+    public void setGoasl(List<Goal> goals) {
         this.goals.clear();
         this.goals.addAll(goals);
         notifyDataSetChanged();
+    }
+
+    class ViewHolder extends RecyclerView.ViewHolder {
+        final TextView tvTime;
+        final TextView tvNome;
+
+        ViewHolder(View itemView) {
+            super(itemView);
+            tvTime = itemView.findViewById(R.id.tv_time);
+            tvNome = itemView.findViewById(R.id.tv_nome);
+        }
+
+        private void setData(Goal goal) {
+            tvTime.setText(goal.getTeam());
+            tvNome.setText(goal.getName());
+        }
     }
 }

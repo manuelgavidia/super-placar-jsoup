@@ -6,11 +6,33 @@ import android.os.Parcelable;
 
 public class Match implements Parcelable {
     public static final String MATCHES_KEY = "matches_key";
+    public static final Parcelable.Creator<Match> CREATOR = new Parcelable.Creator<Match>() {
+        @Override
+        public Match createFromParcel(Parcel source) {
+            return new Match(source);
+        }
 
+        @Override
+        public Match[] newArray(int size) {
+            return new Match[size];
+        }
+    };
     final private Team home;
     final private Team away;
     private String status;
     private String start;
+
+    public Match(Team home, Team away) {
+        this.home = home;
+        this.away = away;
+    }
+
+    private Match(Parcel in) {
+        this.home = in.readParcelable(Team.class.getClassLoader());
+        this.away = in.readParcelable(Team.class.getClassLoader());
+        this.status = in.readString();
+        this.start = in.readString();
+    }
 
     public Team getHome() {
         return home;
@@ -32,7 +54,9 @@ public class Match implements Parcelable {
         return start;
     }
 
-    public void setStart(String start) { this.start = start; }
+    public void setStart(String start) {
+        this.start = start;
+    }
 
     @Override
     public int describeContents() {
@@ -46,28 +70,4 @@ public class Match implements Parcelable {
         dest.writeString(this.status);
         dest.writeString(this.start);
     }
-
-    public Match(Team home, Team away) {
-        this.home = home;
-        this.away = away;
-    }
-
-    private Match(Parcel in) {
-        this.home = in.readParcelable(Team.class.getClassLoader());
-        this.away = in.readParcelable(Team.class.getClassLoader());
-        this.status = in.readString();
-        this.start = in.readString();
-    }
-
-    public static final Parcelable.Creator<Match> CREATOR = new Parcelable.Creator<Match>() {
-        @Override
-        public Match createFromParcel(Parcel source) {
-            return new Match(source);
-        }
-
-        @Override
-        public Match[] newArray(int size) {
-            return new Match[size];
-        }
-    };
 }

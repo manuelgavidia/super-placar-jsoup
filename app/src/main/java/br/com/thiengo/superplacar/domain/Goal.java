@@ -5,8 +5,27 @@ import android.os.Parcelable;
 
 
 public class Goal implements Parcelable {
+    public static final Parcelable.Creator<Goal> CREATOR = new Parcelable.Creator<Goal>() {
+        @Override
+        public Goal createFromParcel(Parcel source) {
+            return new Goal(source);
+        }
+
+        @Override
+        public Goal[] newArray(int size) {
+            return new Goal[size];
+        }
+    };
     private String name;
     private String team;
+
+    public Goal() {
+    }
+
+    private Goal(Parcel in) {
+        this.name = in.readString();
+        this.team = in.readString();
+    }
 
     public String getName() {
         return name;
@@ -24,7 +43,6 @@ public class Goal implements Parcelable {
         this.team = team;
     }
 
-
     @Override
     public int describeContents() {
         return 0;
@@ -35,24 +53,4 @@ public class Goal implements Parcelable {
         dest.writeString(this.name);
         dest.writeString(this.team);
     }
-
-    public Goal() {
-    }
-
-    private Goal(Parcel in) {
-        this.name = in.readString();
-        this.team = in.readString();
-    }
-
-    public static final Parcelable.Creator<Goal> CREATOR = new Parcelable.Creator<Goal>() {
-        @Override
-        public Goal createFromParcel(Parcel source) {
-            return new Goal(source);
-        }
-
-        @Override
-        public Goal[] newArray(int size) {
-            return new Goal[size];
-        }
-    };
 }
