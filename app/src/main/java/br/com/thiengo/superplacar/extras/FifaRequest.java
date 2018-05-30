@@ -18,10 +18,10 @@ import br.com.thiengo.superplacar.domain.Team;
 
 
 public class FifaRequest extends AsyncTask<Void, Void, List<Match>> {
-    final private WeakReference<MainActivity> activity;
+    final private WeakReference<MainActivity> mActivity;
 
     public FifaRequest(MainActivity activity) {
-        this.activity = new WeakReference<>(activity);
+        this.mActivity = new WeakReference<>(activity);
     }
 
     @Override
@@ -58,8 +58,8 @@ public class FifaRequest extends AsyncTask<Void, Void, List<Match>> {
     protected void onPostExecute(List<Match> matches) {
         super.onPostExecute(matches);
 
-        if (activity.get() != null) {
-            activity.get().update(matches);
+        if (mActivity.get() != null) {
+            mActivity.get().update(matches);
         }
     }
 }
