@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,9 +79,7 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.ViewHold
         }
 
         private void setData(Match match) {
-            tvStatus.setText(
-                    Html.fromHtml("<b>" + match.getStatus() + "</b> (" + match.getStart() + ")"));
-
+            tvStatus.setText(""); //TODO : load match status data
             homeView.load(match.getHome());
             awayView.load(match.getAway());
         }
@@ -103,9 +102,14 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.ViewHold
             }
 
             void load(Team team) {
-                Picasso.with(context)
-                        .load(team.getImageUrl())
-                        .into(this.iv);
+                try {
+                    Picasso.with(context)
+                            .load(team.getImageUrl())
+                            .into(this.iv);
+                } catch (Exception e) {
+                    Log.e(this.getClass().getName(), e.toString());
+                }
+
                 this.tvName.setText(String.valueOf(team.getName()));
                 this.tvGoals.setText(String.valueOf(team.getGoals()));
                 updateRecyclerView(this.rv, team.getGoalsList());

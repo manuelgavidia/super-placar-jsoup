@@ -26,13 +26,11 @@ public class MainActivity extends AppCompatActivity {
 
         if (savedInstanceState != null) {
             matches = savedInstanceState.getParcelableArrayList(Match.MATCHES_KEY);
-            initViews();
-            retrieveMatchesStream();
         } else {
             matches = new ArrayList<>();
-            initViews();
-            retrieveMatches();
         }
+        initViews();
+        retrieveMatchesStream();
     }
 
     @Override
@@ -55,11 +53,6 @@ public class MainActivity extends AppCompatActivity {
 
         adapter = new MatchesAdapter(this, matches);
         recyclerView.setAdapter(adapter);
-    }
-
-    private void retrieveMatches() {
-        new FifaRequest(this).execute();
-        retrieveMatchesStream();
     }
 
     private void retrieveMatchesStream() {
