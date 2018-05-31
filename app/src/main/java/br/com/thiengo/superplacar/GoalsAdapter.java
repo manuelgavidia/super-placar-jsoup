@@ -58,7 +58,7 @@ public class GoalsAdapter extends RecyclerView.Adapter<GoalsAdapter.ViewHolder> 
         ViewHolder(View itemView) {
             super(itemView);
             tvTime = itemView.findViewById(R.id.tv_time);
-            tvNome = itemView.findViewById(R.id.tv_nome);
+            tvNome = itemView.findViewById(R.id.tv_name);
         }
 
         private void setData(Goal goal) {
