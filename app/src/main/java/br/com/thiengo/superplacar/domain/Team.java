@@ -2,6 +2,7 @@ package br.com.thiengo.superplacar.domain;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +30,10 @@ public class Team implements Parcelable {
         this.name = name;
         this.imageUrl = url;
         goalsList = new ArrayList<>();
+        if (this.imageUrl.isEmpty() || this.name.isEmpty()) {
+            Log.e(this.getClass().getName(), "Empty img url for " + this.name + "in" +
+            name + url);
+        }
     }
 
     private Team(Parcel in) {
@@ -36,6 +41,9 @@ public class Team implements Parcelable {
         this.imageUrl = in.readString();
         this.goals = in.readInt();
         this.goalsList = in.createTypedArrayList(Goal.CREATOR);
+        if (this.imageUrl.isEmpty() || this.name.isEmpty()) {
+            Log.e(this.getClass().getName(), "Empty img url for " + this.name);
+        }
     }
 
     public String getName() {

@@ -33,9 +33,13 @@ public class FifaRequest extends AsyncTask<Void, Void, List<Match>> {
             Document html = Jsoup.connect("https://www.fifa.com/worldcup/matches").get();
             Elements m_fixtures = html.select("div.fi-mu.fixture");
             for (Element fix : m_fixtures) {
-
-                Team home = getTeam(fix.select("div.fi-t.fi-i--4.home"));
-                Team away = getTeam(fix.select("div.fi-t.fi-i--4.away"));
+                Elements fix_h = fix.select("div.fi-t.fi-i--4.home");
+                Elements fix_a = fix.select("div.fi-t.fi-i--4.away");
+                if (fix_h.isEmpty() || fix_a.isEmpty()) {
+                    continue;
+                }
+                Team home = getTeam(fix_h);
+                Team away = getTeam(fix_a);
                 Match match = new Match(home, away);
 
                 match.setStart(fix.select("fi-mu__info__datetime").text());
