@@ -16,8 +16,8 @@ import br.com.thiengo.superplacar.extras.Worker;
 
 public class MainActivity extends AppCompatActivity {
 
-    private MatchesAdapter adapter;
-    private ArrayList<Match> matches;
+    private MatchesAdapter mMatchesAdapter;
+    private ArrayList<Match> mMatches;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,9 +25,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         if (savedInstanceState != null) {
-            matches = savedInstanceState.getParcelableArrayList(Match.MATCHES_KEY);
+            mMatches = savedInstanceState.getParcelableArrayList(Match.MATCHES_KEY);
         } else {
-            matches = new ArrayList<>();
+            mMatches = new ArrayList<>();
         }
         initViews();
         retrieveMatchesStream();
@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putParcelableArrayList(Match.MATCHES_KEY, matches);
+        outState.putParcelableArrayList(Match.MATCHES_KEY, mMatches);
         super.onSaveInstanceState(outState);
     }
 
@@ -51,8 +51,8 @@ public class MainActivity extends AppCompatActivity {
                 mLayoutManager.getOrientation());
         recyclerView.addItemDecoration(divider);
 
-        adapter = new MatchesAdapter(this, matches);
-        recyclerView.setAdapter(adapter);
+        mMatchesAdapter = new MatchesAdapter(this, mMatches);
+        recyclerView.setAdapter(mMatchesAdapter);
     }
 
     private void retrieveMatchesStream() {
@@ -60,8 +60,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void update(List<Match> j) {
-        matches.clear();
-        matches.addAll(j);
-        adapter.notifyDataSetChanged();
+        mMatches.clear();
+        mMatches.addAll(j);
+        mMatchesAdapter.notifyDataSetChanged();
     }
 }

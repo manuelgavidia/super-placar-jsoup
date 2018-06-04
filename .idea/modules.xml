@@ -3,7 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/super-placar-jsoup.iml" filepath="$PROJECT_DIR$/super-placar-jsoup.iml" />
+      <module fileurl="file://$PROJECT_DIR$/fifa-jsoup.iml" filepath="$PROJECT_DIR$/fifa-jsoup.iml" />
     </modules>
   </component>
 </project>

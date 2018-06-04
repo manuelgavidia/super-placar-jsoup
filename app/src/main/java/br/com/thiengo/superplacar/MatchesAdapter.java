@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,11 +22,11 @@ import br.com.thiengo.superplacar.domain.Team;
 
 public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.ViewHolder> {
     final private Context context;
-    final private List<Match> matches;
+    final private List<Match> mMatches;
 
     MatchesAdapter(Context context, List<Match> matches) {
         this.context = context;
-        this.matches = matches;
+        this.mMatches = matches;
     }
 
     @NonNull
@@ -42,12 +41,12 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.setData(matches.get(position));
+        holder.setData(mMatches.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return matches.size();
+        return mMatches.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
