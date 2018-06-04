@@ -22,14 +22,10 @@ public class Team implements Parcelable {
     };
     final private String name;
     final private String imageUrl;
-    final private List<Goal> goalsList;
-    private int goals;
-
 
     public Team(String name, String url) {
         this.name = name;
         this.imageUrl = url;
-        goalsList = new ArrayList<>();
         if (this.imageUrl.isEmpty() || this.name.isEmpty()) {
             Log.e(this.getClass().getName(), "Empty img url for " + this.name + "in" +
             name + url);
@@ -39,8 +35,6 @@ public class Team implements Parcelable {
     private Team(Parcel in) {
         this.name = in.readString();
         this.imageUrl = in.readString();
-        this.goals = in.readInt();
-        this.goalsList = in.createTypedArrayList(Goal.CREATOR);
         if (this.imageUrl.isEmpty() || this.name.isEmpty()) {
             Log.e(this.getClass().getName(), "Empty img url for " + this.name);
         }
@@ -54,18 +48,6 @@ public class Team implements Parcelable {
         return imageUrl;
     }
 
-    public int getGoals() {
-        return goals;
-    }
-
-    public void setGoals(int goals) {
-        this.goals = goals;
-    }
-
-    public List<Goal> getGoalsList() {
-        return goalsList;
-    }
-
     @Override
     public int describeContents() {
         return 0;
@@ -75,7 +57,5 @@ public class Team implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.name);
         dest.writeString(this.imageUrl);
-        dest.writeInt(this.goals);
-        dest.writeTypedList(this.goalsList);
     }
 }

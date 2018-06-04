@@ -20,7 +20,8 @@ public class Match implements Parcelable {
     final private Team home;
     final private Team away;
     private String status;
-    private String start;
+    private String date;
+    private String score;
 
     public Match(Team home, Team away) {
         this.home = home;
@@ -31,31 +32,40 @@ public class Match implements Parcelable {
         this.home = in.readParcelable(Team.class.getClassLoader());
         this.away = in.readParcelable(Team.class.getClassLoader());
         this.status = in.readString();
-        this.start = in.readString();
+        this.date = in.readString();
+        this.score = in.readString();
     }
 
     public Team getHome() {
-        return home;
+        return this.home;
     }
 
     public Team getAway() {
-        return away;
+        return this.away;
     }
 
     public String getStatus() {
-        return status;
+        return this.status;
     }
 
     public void setStatus(String status) {
         this.status = status;
     }
 
-    public String getStart() {
-        return start;
+    public String getDate() {
+        return this.date;
     }
 
-    public void setStart(String start) {
-        this.start = start;
+    public void setDate(String start) {
+        this.date = start;
+    }
+
+    public String getScore() {
+        return score;
+    }
+
+    public void setScore(String score) {
+        this.score = score;
     }
 
     @Override
@@ -68,6 +78,7 @@ public class Match implements Parcelable {
         dest.writeParcelable(this.home, flags);
         dest.writeParcelable(this.away, flags);
         dest.writeString(this.status);
-        dest.writeString(this.start);
+        dest.writeString(this.date);
+        dest.writeString(this.score);
     }
 }

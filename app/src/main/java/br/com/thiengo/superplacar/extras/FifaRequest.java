@@ -42,7 +42,9 @@ public class FifaRequest extends AsyncTask<Void, Void, List<Match>> {
                 Team away = getTeam(fix_a);
                 Match match = new Match(home, away);
 
-                match.setStart(fix.select("fi-mu__info__datetime").text());
+                match.setDate(fix.select("div.fi-mu__info__datetime").text());
+                match.setStatus(fix.select("div.fi__info__datetime--abbr").text());
+                match.setScore(fix.select("div.fi-s__score.fi-s__date-HHmm").text());
                 matches.add(match);
             }
 
